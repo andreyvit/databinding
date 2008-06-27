@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.ObservableTracker;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -121,7 +122,8 @@ public abstract class ControlUpdater {
 		theControl = toUpdate;
 		
 		theControl.addDisposeListener(privateInterface);
-		theControl.addPaintListener(privateInterface);
+		if (!"cocoa".equals(SWT.getPlatform())) //$NON-NLS-1$
+			theControl.addPaintListener(privateInterface);
 		makeDirty();
 	}
 	

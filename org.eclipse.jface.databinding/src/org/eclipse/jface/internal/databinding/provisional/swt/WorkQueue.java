@@ -114,6 +114,7 @@ public class WorkQueue {
 
             // If we're in the UI thread, add an event filter to ensure
             // the work happens ASAP
+    		if (!"cocoa".equals(SWT.getPlatform())) //$NON-NLS-1$
             if (Display.getCurrent() == d) {
                 if (!paintListenerAttached) {
                     paintListenerAttached = true;
