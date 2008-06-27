@@ -1,0 +1,1 @@
+As of 2006/11/10, this plug-in has been renamed to org.eclipse.jface.databinding. 
