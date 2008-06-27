@@ -23,16 +23,16 @@ package org.eclipse.core.databinding.observable.value;
  * @since 1.0
  * 
  */
-public interface IVetoableValue extends IObservableValue {
+public interface IVetoableValue<T> extends IObservableValue<T> {
 	
 	/**
 	 * @param listener
 	 */
-	public void addValueChangingListener(IValueChangingListener listener);
+	public void addValueChangingListener(IValueChangingListener<T> listener);
 	
 	/**
 	 * @param listener
 	 */
-	public void removeValueChangingListener(IValueChangingListener listener);
+	public void removeValueChangingListener(IValueChangingListener<T> listener);
 
 }

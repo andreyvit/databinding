@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @since 1.1
  */
-public abstract class AbstractSWTVetoableValue extends AbstractVetoableValue implements ISWTObservableValue {
+public abstract class AbstractSWTVetoableValue<T> extends AbstractVetoableValue<T> implements ISWTObservableValue<T> {
 
 	private final Widget widget;
 

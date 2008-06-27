@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Label;
  * @since 3.3
  * 
  */
-public class LabelObservableValue extends AbstractSWTObservableValue {
+public class LabelObservableValue extends AbstractSWTObservableValue<String> {
 
 	private final Label label;
 
@@ -41,9 +41,9 @@ public class LabelObservableValue extends AbstractSWTObservableValue {
 		this.label = label;
 	}
 
-	public void doSetValue(final Object value) {
+	public void doSetValue(final String value) {
 		String oldValue = label.getText();
-		String newValue = value == null ? "" : value.toString(); //$NON-NLS-1$
+		String newValue = value == null ? "" : value; //$NON-NLS-1$
 		label.setText(newValue);
 		
 		if (!newValue.equals(oldValue)) {
@@ -51,7 +51,7 @@ public class LabelObservableValue extends AbstractSWTObservableValue {
 		}
 	}
 
-	public Object doGetValue() {
+	public String doGetValue() {
 		return label.getText();
 	}
 

@@ -49,14 +49,14 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @since 1.2
  */
-public class DelayedObservableValue extends AbstractSWTObservableValue {
+public class DelayedObservableValue<T> extends AbstractSWTObservableValue<T> {
 	class ValueUpdater implements Runnable {
-		private final Object oldValue;
+		private final T oldValue;
 
 		boolean cancel = false;
 		boolean running = false;
 
-		ValueUpdater(Object oldValue) {
+		ValueUpdater(T oldValue) {
 			this.oldValue = oldValue;
 		}
 
@@ -82,8 +82,8 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 		}
 	};
 
-	private IValueChangeListener valueChangeListener = new IValueChangeListener() {
-		public void handleValueChange(ValueChangeEvent event) {
+	private IValueChangeListener<T> valueChangeListener = new IValueChangeListener<T>() {
+		public void handleValueChange(ValueChangeEvent<T> event) {
 			if (!updating)
 				makeDirty();
 		}
@@ -98,11 +98,11 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 	};
 
 	private final int delay;
-	private ISWTObservableValue observable;
+	private ISWTObservableValue<T> observable;
 	private Control control;
 
 	private boolean dirty = true;
-	private Object cachedValue = null;
+	private T cachedValue = null;
 
 	private boolean updating = false;
 
@@ -120,7 +120,7 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 	 *             if <code>updateEventType</code> is an incorrect type.
 	 */
 	public DelayedObservableValue(int delayMillis,
-			ISWTObservableValue observable) {
+			ISWTObservableValue<T> observable) {
 		super(observable.getRealm(), observable.getWidget());
 		this.delay = delayMillis;
 		this.observable = observable;
@@ -136,7 +136,7 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 		cachedValue = doGetValue();
 	}
 
-	protected Object doGetValue() {
+	protected T doGetValue() {
 		if (dirty) {
 			cachedValue = observable.getValue();
 			dirty = false;
@@ -150,7 +150,7 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 		return cachedValue;
 	}
 
-	protected void doSetValue(Object value) {
+	protected void doSetValue(T value) {
 		updating = true;
 		try {
 			// Principle of least surprise: setValue overrides any pending
@@ -158,7 +158,7 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 			dirty = false;
 			cancelScheduledUpdate();
 
-			Object oldValue = cachedValue;
+			T oldValue = cachedValue;
 			observable.setValue(value);
 			// Bug 215297 - target observable could veto or override value
 			// passed to setValue(). Make sure we cache whatever is set.
@@ -222,14 +222,14 @@ public class DelayedObservableValue extends AbstractSWTObservableValue {
 		observable.getWidget().getDisplay().timerExec(delay, updater);
 	}
 
-	private void internalFireValueChange(final Object oldValue) {
+	private void internalFireValueChange(final T oldValue) {
 		cancelScheduledUpdate();
-		fireValueChange(new ValueDiff() {
-			public Object getOldValue() {
+		fireValueChange(new ValueDiff<T>() {
+			public T getOldValue() {
 				return oldValue;
 			}
 
-			public Object getNewValue() {
+			public T getNewValue() {
 				return getValue();
 			}
 		});

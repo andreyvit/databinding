@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @since 1.0
  */
-public class TextObservableValue extends AbstractSWTVetoableValue {
+public class TextObservableValue extends AbstractSWTVetoableValue<String> {
 
 	/**
 	 * {@link Text} widget that this is being observed.
@@ -157,10 +157,10 @@ public class TextObservableValue extends AbstractSWTVetoableValue {
 	 * @throws ClassCastException
 	 *             if the value is anything other than a String
 	 */
-	protected void doSetApprovedValue(final Object value) {
+	protected void doSetApprovedValue(final String value) {
 		try {
 			updating = true;
-			text.setText(value == null ? "" : value.toString()); //$NON-NLS-1$
+			text.setText(value == null ? "" : value); //$NON-NLS-1$
 			oldValue = text.getText();
 		} finally {
 			updating = false;
@@ -172,7 +172,7 @@ public class TextObservableValue extends AbstractSWTVetoableValue {
 	 * 
 	 * @see org.eclipse.core.databinding.observable.value.AbstractVetoableValue#doGetValue()
 	 */
-	public Object doGetValue() {
+	public String doGetValue() {
 		return oldValue = text.getText();
 	}
 

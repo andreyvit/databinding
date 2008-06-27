@@ -221,15 +221,15 @@ public class Diffs {
 	 * @param newValue
 	 * @return a value diff
 	 */
-	public static ValueDiff createValueDiff(final Object oldValue,
-			final Object newValue) {
-		return new ValueDiff() {
+	public static <T> ValueDiff<T> createValueDiff(final T oldValue,
+			final T newValue) {
+		return new ValueDiff<T>() {
 
-			public Object getOldValue() {
+			public T getOldValue() {
 				return oldValue;
 			}
 
-			public Object getNewValue() {
+			public T getNewValue() {
 				return newValue;
 			}
 		};

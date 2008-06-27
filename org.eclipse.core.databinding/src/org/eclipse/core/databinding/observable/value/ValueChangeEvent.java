@@ -21,7 +21,7 @@ import org.eclipse.core.databinding.observable.ObservableEvent;
  * @since 1.0
  * 
  */
-public class ValueChangeEvent extends ObservableEvent {
+public class ValueChangeEvent<T> extends ObservableEvent {
 
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class ValueChangeEvent extends ObservableEvent {
 	 * Description of the change to the source observable value. Listeners must
 	 * not change this field.
 	 */
-	public ValueDiff diff;
+	public ValueDiff<T> diff;
 
 	/**
 	 * Creates a new value change event.
@@ -44,7 +44,7 @@ public class ValueChangeEvent extends ObservableEvent {
 	 * @param diff
 	 *            the value change
 	 */
-	public ValueChangeEvent(IObservableValue source, ValueDiff diff) {
+	public ValueChangeEvent(IObservableValue<T> source, ValueDiff<T> diff) {
 		super(source);
 		this.diff = diff;
 	}
@@ -54,12 +54,14 @@ public class ValueChangeEvent extends ObservableEvent {
 	 * 
 	 * @return returns the observable value from which this event originated
 	 */
-	public IObservableValue getObservableValue() {
-		return (IObservableValue) source;
+	@SuppressWarnings("unchecked")
+	public IObservableValue<T> getObservableValue() {
+		return (IObservableValue<T>) source;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void dispatch(IObservablesListener listener) {
-		((IValueChangeListener) listener).handleValueChange(this);
+		((IValueChangeListener<T>) listener).handleValueChange(this);
 	}
 
 	protected Object getListenerType() {

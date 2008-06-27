@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class SWTObservables {
 
-	private static java.util.List realms = new ArrayList();
+	private static java.util.List<DisplayRealm> realms = new ArrayList<DisplayRealm>();
 
 	/**
 	 * Returns the realm representing the UI thread for the given display.
@@ -74,8 +74,8 @@ public class SWTObservables {
 	 */
 	public static Realm getRealm(final Display display) {
 		synchronized (realms) {
-			for (Iterator it = realms.iterator(); it.hasNext();) {
-				DisplayRealm displayRealm = (DisplayRealm) it.next();
+			for (Iterator<DisplayRealm> it = realms.iterator(); it.hasNext();) {
+				DisplayRealm displayRealm = it.next();
 				if (displayRealm.display == display) {
 					return displayRealm;
 				}
@@ -265,7 +265,7 @@ public class SWTObservables {
 	 * @throws IllegalArgumentException
 	 *             if <code>control</code> type is unsupported
 	 */
-	public static ISWTObservableValue observeText(Control control) {
+	public static ISWTObservableValue<String> observeText(Control control) {
 		if (control instanceof Label) {
 			return new LabelObservableValue((Label) control);
 		} else if (control instanceof Link) {

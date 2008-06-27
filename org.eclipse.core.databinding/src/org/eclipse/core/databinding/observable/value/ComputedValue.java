@@ -32,13 +32,13 @@ import org.eclipse.core.databinding.observable.StaleEvent;
  * 
  * @since 1.0
  */
-public abstract class ComputedValue extends AbstractObservableValue {
+public abstract class ComputedValue<T> extends AbstractObservableValue<T> {
 
 	private boolean dirty = true;
 
 	private boolean stale = false;
 
-	private Object cachedValue = null;
+	private T cachedValue = null;
 
 	/**
 	 * Array of observables this computed value depends on. This field has a
@@ -121,7 +121,7 @@ public abstract class ComputedValue extends AbstractObservableValue {
 
 	private Object valueType;
 
-	protected final Object doGetValue() {
+	protected final T doGetValue() {
 		if (dirty) {
 			// This line will do the following:
 			// - Run the calculate method
@@ -154,7 +154,7 @@ public abstract class ComputedValue extends AbstractObservableValue {
 	 * 
 	 * @return the object's value
 	 */
-	protected abstract Object calculate();
+	protected abstract T calculate();
 
 	protected final void makeDirty() {
 		if (!dirty) {
@@ -163,16 +163,16 @@ public abstract class ComputedValue extends AbstractObservableValue {
 			stopListening();
 
 			// copy the old value
-			final Object oldValue = cachedValue;
+			final T oldValue = cachedValue;
 			// Fire the "dirty" event. This implementation recomputes the new
 			// value lazily.
-			fireValueChange(new ValueDiff() {
+			fireValueChange(new ValueDiff<T>() {
 
-				public Object getOldValue() {
+				public T getOldValue() {
 					return oldValue;
 				}
 
-				public Object getNewValue() {
+				public T getNewValue() {
 					return getValue();
 				}
 			});
@@ -246,7 +246,7 @@ public abstract class ComputedValue extends AbstractObservableValue {
 	}
 
 	public synchronized void addValueChangeListener(
-			IValueChangeListener listener) {
+			IValueChangeListener<T> listener) {
 		super.addValueChangeListener(listener);
 		// If somebody is listening, we need to make sure we attach our own
 		// listeners

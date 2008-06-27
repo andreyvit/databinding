@@ -19,6 +19,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
  * @since 1.1
  *
  */
-public interface ISWTObservableValue extends ISWTObservable, IObservableValue {
+public interface ISWTObservableValue<T> extends ISWTObservable, IObservableValue<T> {
 
 }

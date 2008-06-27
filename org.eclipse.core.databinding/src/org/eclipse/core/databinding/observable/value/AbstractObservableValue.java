@@ -27,7 +27,7 @@ import org.eclipse.core.databinding.observable.Realm;
  * @since 1.0
  * 
  */
-abstract public class AbstractObservableValue extends AbstractObservable implements IObservableValue {
+abstract public class AbstractObservableValue<T> extends AbstractObservable implements IObservableValue<T> {
 	/**
 	 * Constructs a new instance with the default realm.
 	 */
@@ -42,15 +42,15 @@ abstract public class AbstractObservableValue extends AbstractObservable impleme
 		super(realm);
 	}
 
-	public synchronized void addValueChangeListener(IValueChangeListener listener) {
+	public synchronized void addValueChangeListener(IValueChangeListener<T> listener) {
 		addListener(ValueChangeEvent.TYPE, listener);
 	}
 
-	public synchronized void removeValueChangeListener(IValueChangeListener listener) {
+	public synchronized void removeValueChangeListener(IValueChangeListener<T> listener) {
 		removeListener(ValueChangeEvent.TYPE, listener);
 	}
 
-	final public void setValue(Object value) {
+	final public void setValue(T value) {
 		checkRealm();
 		doSetValue(value);
 	}
@@ -61,22 +61,22 @@ abstract public class AbstractObservableValue extends AbstractObservable impleme
 	 * 
 	 * @param value
 	 */
-	protected void doSetValue(Object value) {
+	protected void doSetValue(T value) {
 		throw new UnsupportedOperationException();
 	}
 
-	protected void fireValueChange(ValueDiff diff) {
+	protected void fireValueChange(ValueDiff<T> diff) {
 		// fire general change event first
 		super.fireChange();
-		fireEvent(new ValueChangeEvent(this, diff));
+		fireEvent(new ValueChangeEvent<T>(this, diff));
 	}
 
-	public final Object getValue() {
+	public final T getValue() {
 		getterCalled();
 		return doGetValue();
 	}
 
-	abstract protected Object doGetValue();
+	abstract protected T doGetValue();
 
 	public boolean isStale() {
 		getterCalled();

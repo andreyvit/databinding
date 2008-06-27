@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.observable.Diffs;
  * @since 1.0
  * 
  */
-public abstract class ValueDiff {
+public abstract class ValueDiff<T> {
 	/**
 	 * Creates a value diff.
 	 */
@@ -27,13 +27,14 @@ public abstract class ValueDiff {
 	/**
 	 * @return the old value
 	 */
-	public abstract Object getOldValue();
+	public abstract T getOldValue();
 
 	/**
 	 * @return the new value
 	 */
-	public abstract Object getNewValue();
+	public abstract T getNewValue();
 
+	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
 		if (obj instanceof ValueDiff) {
 			ValueDiff val = (ValueDiff) obj;

@@ -26,7 +26,7 @@ import org.eclipse.core.databinding.observable.Realm;
  * </p>
  * @since 1.0
  */
-public class WritableValue extends AbstractObservableValue {
+public class WritableValue<T> extends AbstractObservableValue<T> {
 
 	private final Object valueType;
 
@@ -46,7 +46,7 @@ public class WritableValue extends AbstractObservableValue {
 	 * @param valueType
 	 *            can be <code>null</code>
 	 */
-	public WritableValue(Object initialValue, Object valueType) {
+	public WritableValue(T initialValue, Object valueType) {
 		this(Realm.getDefault(), initialValue, valueType);
 	}
 
@@ -69,15 +69,15 @@ public class WritableValue extends AbstractObservableValue {
 	 * @param valueType
 	 *            can be <code>null</code>
 	 */
-	public WritableValue(Realm realm, Object initialValue, Object valueType) {
+	public WritableValue(Realm realm, T initialValue, Object valueType) {
 		super(realm);
 		this.valueType = valueType;
 		this.value = initialValue;
 	}
 
-	private Object value = null;
+	private T value = null;
 
-	public Object doGetValue() {
+	public T doGetValue() {
 		return value;
 	}
 
@@ -85,7 +85,7 @@ public class WritableValue extends AbstractObservableValue {
 	 * @param value
 	 *            The value to set.
 	 */
-	public void doSetValue(Object value) {
+	public void doSetValue(T value) {
         boolean changed = false;
 
         if (this.value == null && value != null) {
@@ -107,7 +107,7 @@ public class WritableValue extends AbstractObservableValue {
 	 * @param elementType can be <code>null</code>
 	 * @return new instance with the default realm and a value of <code>null</code>
 	 */
-	public static WritableValue withValueType(Object elementType) {
-		return new WritableValue(Realm.getDefault(), null, elementType);
+	public static <T> WritableValue<T> withValueType(Object elementType) {
+		return new WritableValue<T>(Realm.getDefault(), null, elementType);
 	}
 }

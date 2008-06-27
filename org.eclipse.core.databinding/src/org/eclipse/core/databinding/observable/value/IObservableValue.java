@@ -17,6 +17,8 @@ import org.eclipse.core.databinding.observable.Realm;
 /**
  * A value whose changes can be tracked by value change listeners.
  * 
+ * @param <T> 
+ * 
  * @noextend This interface is not intended to be extended by clients.
  * @noimplement This interface is not intended to be implemented by clients.
  *              Clients should instead subclass one of the classes that
@@ -28,7 +30,7 @@ import org.eclipse.core.databinding.observable.Realm;
  * 
  * @since 1.0
  */
-public interface IObservableValue extends IObservable {
+public interface IObservableValue<T> extends IObservable {
 
 	/**
 	 * The value type of this observable value, or <code>null</code> if this
@@ -44,7 +46,7 @@ public interface IObservableValue extends IObservable {
 	 * @return the current value
 	 * @TrackedGetter
 	 */
-	public Object getValue();
+	public T getValue();
 
 	/**
 	 * Sets the value.  Must be invoked in the {@link Realm} of the observable.
@@ -54,16 +56,16 @@ public interface IObservableValue extends IObservable {
 	 * @throws UnsupportedOperationException
 	 *             if this observable value cannot be set.
 	 */
-	public void setValue(Object value);
+	public void setValue(T value);
 
 	/**
 	 * 
 	 * @param listener
 	 */
-	public void addValueChangeListener(IValueChangeListener listener);
+	public void addValueChangeListener(IValueChangeListener<T> listener);
 
 	/**
 	 * @param listener
 	 */
-	public void removeValueChangeListener(IValueChangeListener listener);
+	public void removeValueChangeListener(IValueChangeListener<T> listener);
 }
